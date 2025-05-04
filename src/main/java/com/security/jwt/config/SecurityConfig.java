@@ -1,5 +1,6 @@
 package com.security.jwt.config;
 
+import com.security.jwt.jwtbusiness.AuthEntryPoint;
 import com.security.jwt.jwtbusiness.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,9 @@ public class SecurityConfig { // Hangi url isteklerine izin verileceğine hangil
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
+    private AuthEntryPoint authEntryPoint;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -32,6 +36,7 @@ public class SecurityConfig { // Hangi url isteklerine izin verileceğine hangil
                                 .permitAll() //  AUTHENTICATE ve  REGISTER adreslerinden istek gelirse controller a sıkıntısız kabul et diyoruz.
                                 .anyRequest()
                                 .authenticated()) // üstteki 2 adres harici diğer adresleri de kontrol et diyoruz.
+                .exceptionHandling().authenticationEntryPoint(authEntryPoint).and() // Herhangi bir hata veya yetkisizlik  olduğunda filter katmanından AuthEntryPoint classıma yönlendir dedik.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
