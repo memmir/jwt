@@ -2,6 +2,7 @@ package com.security.jwt.controller;
 
 import com.security.jwt.dto.DtoUsers;
 import com.security.jwt.jwtbusiness.AuthRequest;
+import com.security.jwt.jwtbusiness.AuthResponse;
 import com.security.jwt.service.IAuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,11 @@ public class RestAuthControllerImpl implements IRestAuthController{
     public DtoUsers register(@Valid @RequestBody AuthRequest request) {// Burada DtoUSers dönmek sistem açığıdır. kaydettiğimiz kişinin şifresini return ediyoruz.
         // Bunun yerine String dönüp Başarı ile kaydedildi demek daha doğru olur.
         return authService.register(request);
+    }
+
+    @PostMapping("/authenticate")
+    @Override
+    public AuthResponse authenticate(@Valid @RequestBody AuthRequest request) {
+        return authService.authenticate(request);
     }
 }
