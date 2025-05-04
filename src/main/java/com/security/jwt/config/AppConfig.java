@@ -1,4 +1,4 @@
-package com.security.jwt;
+package com.security.jwt.config;
 
 import com.security.jwt.model.Users;
 import com.security.jwt.repository.UsersRepository;
